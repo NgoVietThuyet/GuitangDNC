@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="vi">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>DNC Stars</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@600;800&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      body {
+        margin: 0;
+        overflow: hidden;
+        font-family: "Poppins", sans-serif;
+        background: radial-gradient(circle at center, #ffc2d9 0%, #ff80b0 100%);
+        height: 100vh;
+      }
+      canvas {
+        display: block;
+        position: absolute;
+        top: 0;
+        left: 0;
+        z-index: 1;
+      }
+
+      /* Nút Xem Tiếp (Thay thế nút back cũ) */
+      #next-step-btn {
+        position: absolute;
+        bottom: 50px;
+        left: 50%;
+        transform: translateX(-50%);
+        z-index: 20;
+        display: inline-block;
+        padding: 15px 50px;
+        background-color: #ff85b3;
+        color: white;
+        font-weight: 800;
+        font-size: 1.3rem;
+        text-transform: uppercase;
+        border-radius: 50px;
+        border: 3px solid white;
+        box-shadow: 0 4px 15px rgba(255, 105, 180, 0.3);
+        text-decoration: none;
+        transition: all 0.3s ease;
+
+        opacity: 0;
+        visibility: hidden; /* Ẩn ban đầu */
+      }
+      #next-step-btn:hover {
+        background-color: #ff609e;
+        transform: translateX(-50%) translateY(-3px);
+        box-shadow: 0 6px 20px rgba(255, 105, 180, 0.5);
+      }
+      /* Class để hiện nút */
+      .show-btn {
+        animation: fadeInBtn 1s ease forwards;
+        visibility: visible !important;
+      }
+      @keyframes fadeInBtn {
+        from {
+          opacity: 0;
+          transform: translateX(-50%) translateY(20px);
+        }
+        to {
+          opacity: 1;
+          transform: translateX(-50%) translateY(0);
+        }
+      }
+
+      #tagline-container {
+        position: absolute;
+        top: 70%;
+        left: 50%;
+        transform: translateX(-50%);
+        z-index: 5;
+        text-align: center;
+        white-space: nowrap;
+        pointer-events: none;
+      }
+      .tagline-letter {
+        display: inline-block;
+        font-size: 1.8rem;
+        font-weight: 800;
+        color: #fff;
+        text-shadow: 0 0 5px #ff69b4, 0 0 15px #ff69b4;
+        margin: 0 2px;
+        opacity: 0;
+        transform: scale(0) translateY(50px) rotate(-20deg);
+      }
+      @keyframes jumpIn {
+        0% {
+          opacity: 0;
+          transform: scale(0) translateY(50px) rotate(-20deg);
+        }
+        60% {
+          opacity: 1;
+          transform: scale(1.2) translateY(-10px) rotate(5deg);
+        }
+        100% {
+          opacity: 1;
+          transform: scale(1) translateY(0) rotate(0deg);
+        }
+      }
+      @media (max-width: 768px) {
+        .tagline-letter {
+          font-size: 1.2rem;
+          margin: 0 1px;
+        }
+        #tagline-container {
+          top: 65%;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <canvas id="starCanvas"></canvas>
+    <div id="tagline-container"></div>
+
+    <a href="intro.html" id="next-step-btn">Xem tiếp ➡</a>
+
+    <script>
+      // --- PHẦN CANVAS GIỮ NGUYÊN ---
+      const canvas = document.getElementById("starCanvas");
+      const ctx = canvas.getContext("2d");
+      let particles = [];
+      let animationId;
+      const TEXT = "DNC";
+      const FONT_SIZE_VW = 30;
+      const PARTICLE_DENSITY = 5;
+      const TAGLINE_TEXT = "Gọi là nghe - Gặp là chốt";
+      const taglineCont = document.getElementById("tagline-container");
+      const nextBtn = document.getElementById("next-step-btn");
+
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+
+      class Particle {
+        constructor(tx, ty) {
+          this.baseTx = tx;
+          this.baseTy = ty;
+          const a = Math.random() * Math.PI * 2;
+          const r = Math.max(canvas.width, canvas.height) * 1.2;
+          this.x = canvas.width / 2 + Math.cos(a) * r;
+          this.y = canvas.height / 2 + Math.sin(a) * r;
+          this.z = Math.random() * 2 + 0.5;
+          this.size = (Math.random() * 3 + 1.5) * this.z;
+          this.ease = 0.01 * this.z;
+          this.color =
+            Math.random() > 0.3
+              ? `rgba(255,255,255,${Math.random() * 0.6 + 0.4})`
+              : `rgba(255,235,240,${Math.random() * 0.6 + 0.4})`;
+        }
+        draw() {
+          ctx.fillStyle = this.color;
+          ctx.beginPath();
+          ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+          ctx.fill();
+        }
+        update(s) {
+          const cx = canvas.width / 2;
+          const cy = canvas.height / 2;
+          const tx = cx + (this.baseTx - cx) * s;
+          const ty = cy + (this.baseTy - cy) * s;
+          this.x += (tx - this.x) * this.ease;
+          this.y += (ty - this.y) * this.ease;
+        }
+      }
+
+      function init() {
+        particles = [];
+        let fs = (canvas.width * FONT_SIZE_VW) / 100;
+        ctx.font = `900 ${fs}px Verdana, sans-serif`;
+        ctx.fillStyle = "white";
+        ctx.textAlign = "center";
+        ctx.textBaseline = "middle";
+        ctx.fillText(TEXT, canvas.width / 2, canvas.height / 2);
+        const d = ctx.getImageData(0, 0, canvas.width, canvas.height);
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        let g = PARTICLE_DENSITY;
+        if (window.innerWidth < 768) g += 2;
+        if (window.innerWidth > 1400) g = Math.max(1, g - 1);
+        for (let y = 0; y < d.height; y += g) {
+          for (let x = 0; x < d.width; x += g) {
+            if (d.data[y * 4 * d.width + x * 4 + 3] > 128)
+              particles.push(new Particle(x, y));
+          }
+        }
+      }
+      function animate() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        const s = 1 + Math.sin(Date.now() * 0.0015) * 0.02;
+        particles.forEach((p) => {
+          p.update(s);
+          p.draw();
+        });
+        requestAnimationFrame(animate);
+      }
+
+      // --- XỬ LÝ TAGLINE + HIỆN NÚT ---
+      function showTagline() {
+        taglineCont.innerHTML = "";
+        [...TAGLINE_TEXT].forEach((char, index) => {
+          const span = document.createElement("span");
+          span.textContent = char === " " ? "\u00A0" : char;
+          span.className = "tagline-letter";
+          span.style.animation = `jumpIn 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards ${
+            index * 0.05
+          }s`;
+          taglineCont.appendChild(span);
+        });
+
+        // Sau khi chữ cuối cùng xuất hiện (khoảng 2s sau), thì hiện nút Next
+        setTimeout(() => {
+          nextBtn.classList.add("show-btn");
+        }, 2000);
+      }
+
+      init();
+      animate();
+      setTimeout(showTagline, 3500); // 3.5s chờ sao tụ xong thì hiện chữ
+
+      window.addEventListener("resize", () => {
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+        init();
+        taglineCont.innerHTML = "";
+        setTimeout(showTagline, 500);
+      });
+    </script>
+  </body>
+</html>

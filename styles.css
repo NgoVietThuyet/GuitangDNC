@@ -1,0 +1,620 @@
+/* --- RESET & BASE --- */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  user-select: none;
+}
+
+body {
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  background: linear-gradient(
+    135deg,
+    #fce4ec,
+    #f8bbd0,
+    #e1bee7
+  ); /* Pastel Pink -> Blush -> Light Purple */
+  color: #4a4a4a;
+  min-height: 100vh;
+  overflow-x: hidden;
+  position: relative;
+  transition: opacity 0.5s ease; /* Page transition */
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+/* --- BACKGROUND ANIMATION (Sparkles) --- */
+body::before {
+  content: "";
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image: radial-gradient(
+      circle,
+      rgba(255, 255, 255, 0.8) 2px,
+      transparent 2.5px
+    ),
+    radial-gradient(circle, rgba(255, 255, 255, 0.8) 2px, transparent 2.5px);
+  background-size: 50px 50px;
+  background-position: 0 0, 25px 25px;
+  opacity: 0.3;
+  animation: sparkleMove 60s linear infinite;
+  z-index: -1;
+  pointer-events: none;
+}
+
+@keyframes sparkleMove {
+  0% {
+    background-position: 0 0, 25px 25px;
+  }
+  100% {
+    background-position: 1000px 1000px, 1025px 1025px;
+  }
+}
+
+/* --- UI COMPONENTS: VIBE LOGO DNC --- */
+.bubble-text {
+  font-size: 3rem;
+  font-weight: 900;
+  color: #ec407a; /* Hồng đậm vừa */
+  text-align: center;
+  /* Bubble effect: Stroke trắng dày + Shadow hồng neon */
+  -webkit-text-stroke: 4px white;
+  text-shadow: 4px 4px 0px rgba(255, 182, 193, 0.5),
+    /* Bóng cứng nhẹ */ 0 0 15px #ff80ab; /* Glow neon */
+  letter-spacing: 2px;
+  margin-bottom: 20px;
+  animation: float 3s ease-in-out infinite;
+}
+
+.bubble-text.small {
+  font-size: 2rem;
+  -webkit-text-stroke: 2px white;
+}
+
+/* --- BUTTONS: CANDY STYLE --- */
+.btn {
+  display: inline-block;
+  padding: 12px 30px;
+  background: #ff80ab;
+  color: white;
+  font-weight: bold;
+  font-size: 1.1rem;
+  border-radius: 50px;
+  border: 3px solid white;
+  box-shadow: 0 5px 15px rgba(236, 64, 122, 0.3);
+  cursor: pointer;
+  transition: all 0.2s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.btn:hover {
+  transform: translateY(-3px) scale(1.05);
+  background: #ff4081;
+  box-shadow: 0 8px 20px rgba(236, 64, 122, 0.5);
+}
+
+.btn:active {
+  transform: scale(0.95);
+}
+
+/* --- CARDS --- */
+.card {
+  background: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(5px);
+  border-radius: 20px;
+  padding: 20px;
+  border: 2px solid white;
+  box-shadow: 0 10px 20px rgba(255, 105, 180, 0.15);
+  text-align: center;
+  transition: transform 0.3s ease;
+}
+.card:hover {
+  transform: translateY(-5px);
+}
+
+/* --- UTILS --- */
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+}
+.hidden {
+  display: none !important;
+}
+.center-screen {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+}
+
+/* --- ANIMATIONS --- */
+@keyframes float {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+/* --- GALLERY GRID --- */
+.gallery-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  gap: 15px;
+  margin-top: 20px;
+}
+.gallery-item {
+  width: 100%;
+  aspect-ratio: 1/1;
+  object-fit: cover;
+  border-radius: 15px;
+  border: 3px solid white;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  cursor: pointer;
+  transition: transform 0.3s;
+}
+.gallery-item:hover {
+  transform: scale(1.05) rotate(2deg);
+}
+
+/* --- LIGHTBOX --- */
+#lightbox {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.9);
+  z-index: 1000;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s;
+}
+#lightbox.active {
+  opacity: 1;
+  pointer-events: all;
+}
+#lightbox img {
+  max-width: 90%;
+  max-height: 80vh;
+  border-radius: 10px;
+  border: 4px solid white;
+}
+.lb-btn {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background: rgba(255, 255, 255, 0.2);
+  color: white;
+  border: none;
+  font-size: 2rem;
+  padding: 10px 20px;
+  cursor: pointer;
+  border-radius: 50%;
+  transition: 0.2s;
+}
+.lb-btn:hover {
+  background: rgba(255, 255, 255, 0.4);
+}
+#lb-prev {
+  left: 20px;
+}
+#lb-next {
+  right: 20px;
+}
+#lb-close {
+  top: 20px;
+  right: 20px;
+  transform: none;
+  font-size: 1.5rem;
+}
+
+/* --- INPUTS --- */
+input {
+  padding: 10px 20px;
+  border-radius: 20px;
+  border: 2px solid #ff80ab;
+  outline: none;
+  font-size: 1rem;
+  color: #ec407a;
+  text-align: center;
+  margin-bottom: 15px;
+}
+input:focus {
+  box-shadow: 0 0 10px #ff80ab;
+}
+
+/* Responsive */
+@media (min-width: 768px) {
+  .gallery-grid {
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  }
+  .bubble-text {
+    font-size: 5rem;
+  }
+}
+/* --- INTRO LETTER OVERLAY --- */
+#letter-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(255, 240, 245, 0.95); /* Nền hồng phấn che gallery */
+  z-index: 1000; /* Nằm trên cùng */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transition: opacity 0.8s ease;
+}
+
+.letter-card {
+  background: white;
+  width: 90%;
+  max-width: 600px;
+  padding: 40px;
+  border-radius: 20px;
+  border: 3px solid #ff80ab;
+  box-shadow: 0 10px 30px rgba(236, 64, 122, 0.2);
+  text-align: left;
+  position: relative;
+}
+
+/* Hiệu ứng ghim giấy cute ở góc (trang trí) */
+.letter-card::before {
+  content: "";
+  position: absolute;
+  top: -15px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 100px;
+  height: 30px;
+  background: rgba(255, 255, 255, 0.5);
+  border: 2px solid #ff80ab;
+  border-radius: 5px;
+}
+
+#typewriter-text {
+  font-family: "Courier New", Courier, monospace; /* Font kiểu máy đánh chữ */
+  font-size: 1.1rem;
+  line-height: 1.6;
+  color: #444;
+  min-height: 100px;
+}
+
+/* Con trỏ nhấp nháy khi đang gõ */
+.cursor {
+  display: inline-block;
+  width: 2px;
+  height: 1.2rem;
+  background: #ec407a;
+  animation: blink 0.8s infinite;
+  vertical-align: middle;
+}
+
+@keyframes blink {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0;
+  }
+}
+
+.hidden-overlay {
+  opacity: 0;
+  pointer-events: none;
+}
+/* --- HAMBURGER MENU (Nút 3 gạch) --- */
+#menu-toggle {
+  position: fixed;
+  top: 20px;
+  left: 20px;
+  z-index: 3000; /* Cao hơn mọi thứ */
+  cursor: pointer;
+  display: none; /* Mặc định ẩn, chỉ hiện khi Unlock */
+  background: rgba(255, 255, 255, 0.8);
+  padding: 10px;
+  border-radius: 10px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.bar {
+  width: 30px;
+  height: 4px;
+  background-color: #ec407a;
+  margin: 5px 0;
+  transition: 0.4s;
+  border-radius: 2px;
+}
+
+/* Hiệu ứng biến thành dấu X khi mở */
+.change .bar1 {
+  transform: translate(0, 9px) rotate(-45deg);
+}
+.change .bar2 {
+  opacity: 0;
+}
+.change .bar3 {
+  transform: translate(0, -9px) rotate(45deg);
+}
+
+/* --- SIDE NAVIGATION (Thanh menu trượt) --- */
+#side-nav {
+  height: 100%;
+  width: 250px;
+  position: fixed;
+  z-index: 2999;
+  top: 0;
+  left: -250px; /* Giấu sang trái */
+  background-color: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(10px);
+  overflow-x: hidden;
+  transition: 0.5s;
+  padding-top: 80px;
+  box-shadow: 5px 0 15px rgba(0, 0, 0, 0.1);
+  border-right: 2px solid #ff80ab;
+}
+
+#side-nav.open {
+  left: 0;
+}
+
+#side-nav a {
+  padding: 15px 25px;
+  text-decoration: none;
+  font-size: 1.2rem;
+  color: #ec407a;
+  display: block;
+  transition: 0.3s;
+  font-weight: bold;
+  border-bottom: 1px solid #ffeef5;
+}
+
+#side-nav a:hover {
+  background-color: #ffebf2;
+  padding-left: 35px; /* Hiệu ứng đẩy chữ */
+}
+/* ===== Letter paper (lined notebook) ===== */
+.letter-page {
+  min-height: 100vh;
+  display: grid;
+  place-items: center;
+  padding: 26px 14px 60px;
+  background: radial-gradient(
+      circle at 30% 20%,
+      rgba(255, 194, 217, 0.45),
+      rgba(255, 128, 176, 0.18)
+    ),
+    radial-gradient(
+      circle at 80% 80%,
+      rgba(210, 140, 255, 0.16),
+      transparent 55%
+    );
+}
+
+.paper-wrap {
+  width: min(880px, 94vw);
+  position: relative;
+}
+
+.paper {
+  position: relative;
+  border-radius: 22px;
+  background:
+    /* giấy trắng hơi hồng */ linear-gradient(
+      180deg,
+      rgba(255, 255, 255, 0.92),
+      rgba(255, 255, 255, 0.86)
+    ),
+    /* dòng kẻ */
+      repeating-linear-gradient(
+        to bottom,
+        rgba(255, 130, 175, 0) 0px,
+        rgba(255, 130, 175, 0) 28px,
+        rgba(255, 130, 175, 0.18) 29px
+      );
+  border: 1px solid rgba(255, 255, 255, 0.95);
+  box-shadow: 0 26px 80px rgba(255, 90, 160, 0.22);
+  padding: 26px 22px 20px 58px; /* chừa lề trái */
+  overflow: hidden;
+}
+
+/* Lề đỏ kiểu vở */
+.paper::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 40px;
+  width: 2px;
+  height: 100%;
+  background: rgba(255, 80, 130, 0.35);
+}
+
+/* Header nhỏ */
+.paper-header {
+  display: flex;
+  gap: 10px;
+  align-items: baseline;
+  justify-content: space-between;
+  margin-bottom: 10px;
+}
+
+.paper-title {
+  font-size: 22px;
+  font-weight: 900;
+  color: #b00058;
+  text-shadow: 0 8px 18px rgba(255, 90, 160, 0.22);
+}
+
+.paper-date {
+  font-size: 14px;
+  opacity: 0.75;
+}
+
+/* chữ “viết tay” (không dùng font online, ưu tiên font có sẵn) */
+.paper-text {
+  font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text",
+    "SF Pro Display", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-size: 18px;
+  line-height: 29px; /* khớp dòng kẻ */
+  color: rgba(60, 10, 30, 0.92);
+  white-space: pre-wrap;
+  word-break: break-word;
+  min-height: 320px;
+}
+
+/* con trỏ gõ chữ */
+.paper-caret::after {
+  content: "▍";
+  display: inline-block;
+  margin-left: 2px;
+  animation: blink 0.9s infinite;
+  opacity: 0.9;
+}
+@keyframes blink {
+  50% {
+    opacity: 0;
+  }
+}
+
+.paper-actions {
+  margin-top: 14px;
+  display: flex;
+  gap: 10px;
+  justify-content: flex-end;
+  flex-wrap: wrap;
+}
+/* ===== Hamburger (3 gạch) góc trái trên ===== */
+#menu-toggle {
+  position: fixed;
+  top: 18px;
+  left: 18px;
+  width: 48px;
+  height: 48px;
+  z-index: 2000;
+  display: block; /* luôn hiện */
+  cursor: pointer;
+  border-radius: 14px;
+  background: rgba(255, 255, 255, 0.78);
+  border: 1px solid rgba(255, 255, 255, 0.95);
+  box-shadow: 0 14px 40px rgba(255, 90, 160, 0.18);
+  backdrop-filter: blur(8px);
+
+  /* canh giữa 3 gạch */
+  display: grid;
+  place-items: center;
+}
+
+#menu-toggle .bar {
+  width: 22px;
+  height: 2px;
+  background: rgba(176, 0, 88, 0.85);
+  margin: 4px 0;
+  border-radius: 999px;
+  transition: 0.25s ease;
+}
+
+/* biến thành X khi mở */
+#menu-toggle.change .bar1 {
+  transform: translateY(6px) rotate(45deg);
+}
+#menu-toggle.change .bar2 {
+  opacity: 0;
+}
+#menu-toggle.change .bar3 {
+  transform: translateY(-6px) rotate(-45deg);
+}
+
+/* ===== Side nav trượt từ trái ===== */
+#side-nav {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 100vh;
+  width: 280px;
+  z-index: 1900;
+
+  padding: 86px 16px 18px;
+  background: rgba(255, 240, 247, 0.92);
+  border-right: 1px solid rgba(255, 255, 255, 0.9);
+  box-shadow: 18px 0 70px rgba(255, 90, 160, 0.18);
+  backdrop-filter: blur(10px);
+
+  transform: translateX(-105%);
+  transition: transform 0.3s ease;
+}
+
+#side-nav.open {
+  transform: translateX(0);
+}
+
+#side-nav a {
+  display: block;
+  text-decoration: none;
+  margin: 10px 0;
+  padding: 12px 14px;
+  border-radius: 14px;
+
+  font-weight: 700;
+  color: rgba(60, 10, 30, 0.9);
+  background: rgba(255, 255, 255, 0.65);
+  border: 1px solid rgba(255, 255, 255, 0.9);
+  transition: 0.2s ease;
+}
+
+#side-nav a:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 12px 30px rgba(255, 90, 160, 0.16);
+}
+
+/* ===== lớp nền mờ khi mở menu (khuyến nghị) ===== */
+#nav-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 1850;
+  background: rgba(10, 0, 10, 0.22);
+  backdrop-filter: blur(2px);
+  opacity: 0;
+  pointer-events: none;
+  transition: 0.25s ease;
+}
+
+#nav-overlay.show {
+  opacity: 1;
+  pointer-events: auto;
+}
+.music-btn {
+  position: fixed;
+  right: 16px;
+  top: 16px;
+  z-index: 99999999;
+  border: 1px solid rgba(255, 255, 255, 0.9);
+  background: rgba(255, 255, 255, 0.78);
+  backdrop-filter: blur(8px);
+  border-radius: 14px;
+  padding: 10px 12px;
+  pointer-events: auto !important;
+  cursor: pointer;
+  font-weight: 800;
+  box-shadow: 0 14px 40px rgba(255, 90, 160, 0.18);
+  color: rgba(176, 0, 88, 0.9);
+}
+.music-btn.on {
+  background: rgba(255, 194, 217, 0.55);
+}

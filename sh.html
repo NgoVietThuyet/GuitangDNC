@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="vi">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Album SH</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <audio id="bgm" src="data/IMG/music.mp3" preload="auto" loop></audio>
+
+    <button id="musicBtn" class="music-btn" type="button" title="Bật/tắt nhạc">
+      🎵 Nhạc: OFF
+    </button>
+
+    <div id="letter-overlay">
+      <div class="letter-card">
+        <h2
+          class="bubble-text small"
+          style="font-size: 1.5rem; margin-bottom: 15px"
+        >
+          Áo SH kìa!,
+        </h2>
+        <p><span id="typewriter-text"></span><span class="cursor"></span></p>
+        <div style="text-align: center; margin-top: 20px">
+          <button id="enter-gallery-btn" class="btn hidden">📸</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="container">
+      <h1 class="bubble-text small" style="margin-bottom: 20px">
+        Những bức ảnh trong màu áo SH - màu áo của đứa con tinh thần to lớn Sắc
+        Hồng Hy Vọng
+      </h1>
+
+      <div class="gallery-grid" id="gallery-grid"></div>
+
+      <div style="text-align: center; margin-top: 50px; margin-bottom: 30px">
+        <a
+          href="vuichoi.html"
+          class="btn"
+          style="padding: 15px 40px; font-size: 1.2rem"
+        >
+          ➡
+        </a>
+      </div>
+    </div>
+
+    <div id="lightbox">
+      <button class="lb-btn" id="lb-close" onclick="closeLightbox()">✖</button>
+      <button class="lb-btn" id="lb-prev" onclick="prevImage()">❮</button>
+      <img src="" id="lb-img" />
+      <button class="lb-btn" id="lb-next" onclick="nextImage()">❯</button>
+    </div>
+
+    <script src="assets/js/sh.js"></script>
+
+    <script>
+      window.INTRO_MSG =
+        "Sắc Hồng Hy Vọng - đứa con tinh thần to lớn của đội máu Người Việt Trẻ. Trong 2 mùa SHHV vừa qua, ban mình có được những thành tựu nhất định trong việc đưa Sắc Hồng Hy Vọng tiến xa hơn trên mặt trận truyền thông, báo chí và NNT, NTT. Anh/Chị và các em đã cố gắng hết sức mình để mời NNT, NTT đến với chương trình. Tuy còn nhiều khó nhăn nhưng những hình ảnh sau đây là minh chứng xác đáng nhất có những nổ lực của chúng ta";
+    </script>
+
+    <script src="script.js"></script>
+    <script>
+      if (window.SH_IMAGES) initGallery(window.SH_IMAGES, "data/IMG/SH/");
+    </script>
+  </body>
+</html>

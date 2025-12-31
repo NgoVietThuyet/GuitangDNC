@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="vi">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>DNC Memories</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <div class="center-screen">
+      <h1 class="bubble-text">DNC</h1>
+      <audio id="bgm" src="data/IMG/music.mp3" preload="auto" loop></audio>
+      <div class="card" style="width: 300px">
+        <p style="margin-bottom: 10px; color: #ec407a">Nhập mật khẩu bí mật:</p>
+        <input
+          type="password"
+          id="pass-input"
+          placeholder="Mật khẩu là tên nhóm..."
+        />
+        <br />
+        <button class="btn" onclick="handleLogin()">Bắt đầu</button>
+        <div
+          id="toast"
+          style="
+            opacity: 0;
+            color: red;
+            margin-top: 10px;
+            transition: opacity 0.3s;
+            font-size: 0.9rem;
+          "
+        >
+          Sai rùi đồ ngốc! (Gợi ý: DNC)
+        </div>
+      </div>
+    </div>
+    <script src="script.js"></script>
+  </body>
+</html>

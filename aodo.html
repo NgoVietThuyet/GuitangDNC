@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="vi">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Album Áo Đỏ</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <audio id="bgm" src="data/IMG/music.mp3" preload="auto" loop></audio>
+
+    <button id="musicBtn" class="music-btn" type="button" title="Bật/tắt nhạc">
+      🎵 Nhạc: OFF
+    </button>
+
+    <div id="letter-overlay">
+      <div class="letter-card">
+        <h2
+          class="bubble-text small"
+          style="font-size: 1.5rem; margin-bottom: 15px"
+        >
+          Áo đỏ nè!,
+        </h2>
+        <p><span id="typewriter-text"></span><span class="cursor"></span></p>
+        <div style="text-align: center; margin-top: 20px">
+          <button id="enter-gallery-btn" class="btn hidden">📸</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="container">
+      <h1 class="bubble-text small" style="margin-bottom: 20px">
+        Những bức ảnh trong màu áo dỏ - màu áo tượng trưng cho tinh thần tình
+        nguyện nhà Máu
+      </h1>
+
+      <div class="gallery-grid" id="gallery-grid"></div>
+
+      <div style="text-align: center; margin-top: 50px; margin-bottom: 30px">
+        <a
+          href="sh.html"
+          class="btn"
+          style="padding: 15px 40px; font-size: 1.2rem"
+        >
+          ➡
+        </a>
+      </div>
+    </div>
+
+    <div id="lightbox">
+      <button class="lb-btn" id="lb-close" onclick="closeLightbox()">✖</button>
+      <button class="lb-btn" id="lb-prev" onclick="prevImage()">❮</button>
+      <img src="" id="lb-img" />
+      <button class="lb-btn" id="lb-next" onclick="nextImage()">❯</button>
+    </div>
+
+    <script src="assets/js/aodo.js"></script>
+
+    <script>
+      window.INTRO_MSG =
+        "Hihi Xin chào các Em, trong suốt 1 năm hoạt động tình nguyện cùng nhau dưới mái nhà đội máu Người Việt Trẻ. Chúng ta không còn lạ gì với màu áo đỏ này nữa rồi, nó không chỉ là chiếc áo đỏ đơn thuần mà còn chứa đựng trong đó biết bao ý nghĩa. Những kỉ niệm, những trải nghiệm, những con người đã cùng nhau tạo nên một tập thể vững mạnh, đoàn kết và đầy nhiệt huyết. Anh/chị rất vui và tự hào khi được là một phần của đội máu này, được cùng các em tham gia vào những hoạt động ý nghĩa, giúp đỡ cộng đồng và lan tỏa tình yêu thương.";
+    </script>
+
+    <script src="script.js"></script>
+    <script>
+      if (window.AODO_IMAGES) initGallery(window.AODO_IMAGES, "data/IMG/AoDo/");
+    </script>
+  </body>
+</html>

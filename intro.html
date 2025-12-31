@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="vi">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Chào DNC</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <audio id="bgm" src="data/IMG/music.mp3" preload="auto" loop></audio>
+
+    <button id="musicBtn" class="music-btn" type="button" title="Bật/tắt nhạc">
+      🎵 Nhạc: OFF
+    </button>
+
+    <div id="menu-toggle" onclick="toggleMenu()">
+      <div class="bar bar1"></div>
+      <div class="bar bar2"></div>
+      <div class="bar bar3"></div>
+    </div>
+
+    <div id="side-nav">
+      <a href="stars.html">✨ DNC Stars</a>
+      <a href="aodo.html">📸 Album Áo Đỏ</a>
+      <a href="sh.html">🛵 Album SH</a>
+      <a href="vuichoi.html">🎡 Album Vui Chơi</a>
+      <a href="letter.html">💌 Thư cảm ơn</a>
+    </div>
+    <div id="nav-overlay"></div>
+    <div class="container" style="text-align: center; padding-top: 10vh">
+      <h1 class="bubble-text">Hello DNC!</h1>
+      <div class="card" style="max-width: 600px; margin: 0 auto; padding: 40px">
+        <p
+          style="
+            font-size: 1.2rem;
+            line-height: 1.8;
+            margin-bottom: 30px;
+            text-align: justify;
+          "
+        >
+          Chúc mừng năm mới 2026! Đối ngoại con, Đối ngoại Cáo của chúng ta! Các
+          cháu hãy thắt chạy dây an toàn, tìm kiếm một nơi yên tĩnh và nhớ lại
+          từng khoảng khắc đáng nhớ của chúng ta trong chuyến phiêu lưu này nhé.
+          <br /><br />
+          Đây không chỉ là những bức ảnh, mà là những thước phim quay chậm về
+          những ngày tháng rực rỡ nhất - Những ngày tháng đã gắn kết chúng ta từ
+          những con người xa lạ dần trở nên thân thiết đến lạ kỳ, thậm trí là
+          NHÀ<br />
+          Ở đó có những nụ cười, có những chuyến đi bão táp, và có cả tình bạn
+          "diệu kỳ" của tụi mình. Anh/Chị rất vui và hạnh phúc vì trong suốt
+          những ngày tháng hoạt động với cương vị BDH DNC lại có thể trở thành
+          những mảnh ký ức không thể phai nhòa bên mấy đứa.
+          <br /><br />
+          Chúng ta cùng khám phá một chút nhé!
+        </p>
+
+        <a
+          href="aodo.html"
+          class="btn"
+          style="font-size: 1.3rem; padding: 15px 40px"
+        >
+          ➡
+        </a>
+      </div>
+    </div>
+
+    <script src="script.js"></script>
+
+    <script>
+      const menuBtn = document.getElementById("menu-toggle");
+      const sideNav = document.getElementById("side-nav");
+      const overlay = document.getElementById("nav-overlay");
+
+      function toggleMenu(forceClose = false) {
+        const willOpen = forceClose
+          ? false
+          : !sideNav.classList.contains("open");
+
+        menuBtn.classList.toggle("change", willOpen);
+        sideNav.classList.toggle("open", willOpen);
+        overlay.classList.toggle("show", willOpen);
+      }
+
+      // Bấm overlay để đóng
+      overlay.addEventListener("click", () => toggleMenu(true));
+
+      // ESC để đóng
+      document.addEventListener("keydown", (e) => {
+        if (e.key === "Escape") toggleMenu(true);
+      });
+
+      // (Tuỳ chọn) Nếu anh vẫn muốn “mở khóa mới hiện menu”
+      // Nếu không cần, bỏ hết đoạn này:
+    </script>
+  </body>
+</html>

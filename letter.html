@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="vi">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Thư gửi DNC</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+
+  <body class="letter-page">
+    <audio id="bgm" preload="auto" loop playsinline>
+      <source src="data/IMG/music.mp3" type="audio/mpeg" />
+    </audio>
+
+    <button id="musicBtn" class="music-btn" type="button" title="Bật/tắt nhạc">
+      🎵 Nhạc: OFF
+    </button>
+
+    <div class="paper-wrap">
+      <div class="paper">
+        <div class="paper-header">
+          <div class="paper-title">Thư gửi DNC 💗</div>
+          <div class="paper-date" id="paperDate"></div>
+        </div>
+
+        <div id="letterText" class="paper-text paper-caret"></div>
+
+        <div class="paper-actions">
+          <a class="btn" href="intro.html">Về Intro</a>
+        </div>
+      </div>
+    </div>
+
+    <script src="script.js"></script>
+    <script>
+      // Nếu anh đã có checkLogin() trong script.js thì giữ; nếu không có thì bỏ dòng dưới.
+      if (typeof checkLogin === "function") checkLogin();
+
+      // Hiển thị ngày (anh có thể sửa cố định nếu muốn)
+      const d = new Date();
+      document.getElementById("paperDate").textContent = `${d.getDate()}/${
+        d.getMonth() + 1
+      }/${d.getFullYear()}`;
+
+      const el = document.getElementById("letterText");
+
+      // ===== BỨC THƯ (hay hơn) =====
+      const LETTER = `Gửi DNCon yêu dấu của anh/chị,
+Lời đầu tiên, anh/chị xin gửi lời chúc mừng năm mới 2026 đến tất cả các thành viên DNC! Chúc mọi người một năm mới tràn đầy sức khỏe, hạnh phúc và thành công trong mọi lĩnh vực của cuộc sống.
+
+Vậy là một năm nữa đã đi qua. Nhìn lại mới thấy: điều tuyệt vời nhất không phải là mình đã đi được bao xa, mà là tụi mình vẫn còn ở đây — vẫn cười được với nhau, vẫn rủ nhau đi chơi, vẫn chụp những bức ảnh ngốc nghếch mà đáng yêu.
+
+Anh/Chị vẫn còn nhớ như in khoảng khắc anh/chị lo sợ khi ngày đầu lên chức, lo sợ về những điều anh chị được kỳ vọng sẽ làm được và lo sợ về việc làm sao để làm cho mấy đứa em của anh/chị không bị thiệt thòi. Anh/chị nhớ những buổi họp Đội, gặp mặt lần đầu tiên với các em, chúng ta là những người xa lạ - lạ nhưng lại quen. Từ những ánh mặt gượng ngùng, những câu hỏi xã giao đầy sượn chân mà giờ đây chúng ta có thể thoải mái ngồi lại với nhau cả buổi trời để tâm sự, kể cho nhau nghe đủ thứ trên đời này. Bây giờ đây, anh/chị đã trở thành người GIÀ, đã trở thành những người không kề vai sát cánh với mấy đứa trong các hoạt động của Đội nữa. Nhìn lại chặng hành trình đã qua, anh/chị có phần tự hào về ban, về những kỷ niệm chúng ta cùng tạo nên, có phần lại tự trách vì mình đã để cho những đứa em nhỏ bé này đã phải rơi nước mắt vì buồn bực, vì không được quan tâm nhiều hơn. 
+
+Khi anh chị rời đi, anh/chị chỉ mong muốn rằng: DNC sẽ luôn là một gia đình, nơi mà mỗi thành viên đều cảm thấy được yêu thương, được trân trọng và được là chính mình. Anh Thuyết trong một đêm nào đó nghĩ về DNC, nghĩ về Đội đã tự hỏi mình nên làm gì để tặng các em trong ngày đầu năm mới. Và từ đó, chiếc web dễ thương này được dần dần hình thành. Tuy những bức ảnh trong đây không thể hiện hết tất cả những khoảnh khắc đẹp của DNC, nhưng anh/chị hy vọng nó sẽ gợi nhớ cho mọi người về những kỷ niệm đáng quý mà chúng ta đã cùng nhau trải qua. Có những tấm ảnh nhìn vào là nhớ ngay một câu nói, một trò đùa, một khoảnh khắc “đỉnh điểm” của ngày hôm đó. Có những tấm thì chẳng cần lý do… chỉ cần thấy mọi người đứng cạnh nhau là đã đủ vui rồi.
+
+Anh/chị cảm ơn mấy đứa vì đã hết mình trong công việc, đã luôn hỗ trợ, động viên anh/chị trong những ngày ngạt thở nhất của deadline. Cảm ơn vì đã cho anh/chị cơ hội được làm việc cùng các em, được học hỏi từ các em và được chứng kiến sự trưởng thành của từng thành viên trong ban.
+Các em hãy nhớ rằng, anh/chị luôn tự hào về mấy đứa, và sẽ luôn ở đằng sau hỗ trợ, động viên cũng như vui chơi cùng mấy đứa trong suốt chặng đường tiếp theo của mấy đứa. 
+
+Bước sang năm mới, chúc từng thành viên DNC:
+• luôn khỏe mạnh và bình an,
+• học hành/công việc thuận lợi, gặp nhiều cơ hội tốt,
+• tâm trạng nhẹ nhàng hơn, áp lực ít lại,
+• và vẫn giữ được sự “ấm” của tụi mình — dù ai có bận rộn thế nào.
+
+Nếu năm 2026 có gì khó, anh/chị mong tụi mình vẫn nhớ: chỉ cần gọi một tiếng, DNC vẫn ở đó.
+Còn nếu năm 2026 có gì vui… thì càng phải kéo nhau đi chụp thêm nhiều ảnh nữa nhé. Anh chị mong chờ một buổi bonding với gen mới lắm. ✨
+
+Yêu thương và nhớ DNC nhiều lắm,
+— DNCao`;
+
+      // Dùng typeWriter nếu anh đã có trong script.js (ở phần thư ngỏ)
+      // Nếu chưa có, em sẽ kèm bản mini ngay dưới.
+      const SPEED = 80;
+
+      function miniTypeWriter(element, text, speed) {
+        element.textContent = "";
+        element.classList.add("paper-caret");
+        let i = 0;
+        let timer = setInterval(() => {
+          element.textContent += text[i] ?? "";
+          i++;
+          if (i >= text.length) {
+            clearInterval(timer);
+            element.classList.remove("paper-caret");
+          }
+        }, speed);
+
+        element._skip = () => {
+          clearInterval(timer);
+          element.textContent = text;
+          element.classList.remove("paper-caret");
+        };
+      }
+
+      // Ưu tiên dùng typeWriter có sẵn (nếu anh đã thêm trước đó), không thì dùng mini
+      if (typeof typeWriter === "function") {
+        typeWriter(el, LETTER, SPEED).then(() => {});
+      } else {
+        miniTypeWriter(el, LETTER, SPEED);
+      }
+
+      document.getElementById("skipBtn").addEventListener("click", () => {
+        if (el._skip) el._skip();
+        // nếu đang dùng typeWriter bản Promise ở script.js, nó có el._skipType
+        if (el._skipType) el._skipType();
+      });
+    </script>
+  </body>
+</html>

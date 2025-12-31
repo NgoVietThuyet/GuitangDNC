@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="vi">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Album Họp ban, đi chơi</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <audio id="bgm" src="data/IMG/music.mp3" preload="auto" loop></audio>
+
+    <button id="musicBtn" class="music-btn" type="button" title="Bật/tắt nhạc">
+      🎵 Nhạc: OFF
+    </button>
+
+    <div id="letter-overlay">
+      <div class="letter-card">
+        <h2
+          class="bubble-text small"
+          style="font-size: 1.5rem; margin-bottom: 15px"
+        >
+          Gửi các cháu DNC yêu quý!,
+        </h2>
+        <p><span id="typewriter-text"></span><span class="cursor"></span></p>
+        <div style="text-align: center; margin-top: 20px">
+          <button id="enter-gallery-btn" class="btn hidden">📸</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="container">
+      <h1 class="bubble-text small" style="margin-bottom: 20px">
+        Đây là những giây phút chúng ta được làm việc cùng nhau, được đi chơi
+        cùng nhau nè!
+      </h1>
+
+      <div class="gallery-grid" id="gallery-grid"></div>
+
+      <div style="text-align: center; margin-top: 50px; margin-bottom: 30px">
+        <a
+          href="letter.html"
+          class="btn"
+          style="padding: 15px 40px; font-size: 1.2rem"
+        >
+          ➡
+        </a>
+      </div>
+    </div>
+
+    <div id="lightbox">
+      <button class="lb-btn" id="lb-close" onclick="closeLightbox()">✖</button>
+      <button class="lb-btn" id="lb-prev" onclick="prevImage()">❮</button>
+      <img src="" id="lb-img" />
+      <button class="lb-btn" id="lb-next" onclick="nextImage()">❯</button>
+    </div>
+
+    <script src="assets/js/vuichoi.js"></script>
+
+    <script>
+      window.INTRO_MSG =
+        "Đến với môi trường tình nguyên - đặc biệt môi trường nhà Máu. Trong chúng ta chắc chắn điều đầu tiên mong mỏi nhất đó là có nhiều niềm vui, nhiều bạn bè và nhiều kỷ niệm đáng nhớ. Những buổi họp ban hàng tuần, những buổi bonding ban vui vẻ, tất cả chúng đóng vai trò như những chiếc cầu nối gắn liền chúng ta lại với nhau, giúp chúng ta hiểu và thương mến với nhau hơn. Anh/chị rất vui và hạnh phúc khi được đồng hành cùng các em trong những khoảnh khắc tuyệt vời này.";
+    </script>
+
+    <script src="script.js"></script>
+    <script>
+      if (window.VUICHOI_IMAGES)
+        initGallery(window.VUICHOI_IMAGES, "data/IMG/VuiChoi/");
+    </script>
+  </body>
+</html>
