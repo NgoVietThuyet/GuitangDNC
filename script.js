@@ -32,6 +32,9 @@ document.addEventListener("DOMContentLoaded", () => {
       const href = link.getAttribute("href");
       if (href && href !== "#" && !href.startsWith("javascript")) {
         e.preventDefault();
+
+      const audio = document.getElementById("bgm");
+      if (audio) localStorage.setItem("dnc_bgm_time", String(audio.currentTime || 0));
         document.body.style.opacity = 0;
         setTimeout(() => (window.location.href = href), 500);
       }
@@ -229,11 +232,11 @@ document.addEventListener("DOMContentLoaded", () => {
    - Có lưu currentTime để tiếp tục khi sang trang
    ========================================================= */
 // ===== BGM: OFF -> Play, ON -> Pause (giống lệnh anh test) =====
-// ===== BGM: Đồng bộ ON/OFF giữa các trang + nhớ thời gian =====
+// ===== BGM: nhớ ON/OFF + nhớ currentTime để qua trang không reset =====
 (function () {
-  const KEY_ON = "dnc_bgm_on"; // true/false
-  const KEY_T = "dnc_bgm_time"; // currentTime
-  const KEY_V = "dnc_bgm_vol"; // volume
+  const KEY_ON = "dnc_bgm_on";
+  const KEY_T  = "dnc_bgm_time";
+  const KEY_V  = "dnc_bgm_vol";
 
   function safeNum(v, fallback = 0) {
     const n = Number(v);
@@ -246,46 +249,46 @@ document.addEventListener("DOMContentLoaded", () => {
     btn.classList.toggle("on", on);
   }
 
-  async function tryPlay(audio) {
-    if (!audio) return false;
-    try {
-      audio.muted = false;
-      if (audio.readyState < 2) audio.load();
-      await audio.play();
-      return true;
-    } catch (e) {
-      return false;
-    }
-  }
-
   function initBGM() {
     const audio = document.getElementById("bgm");
-    const btn = document.getElementById("musicBtn");
+    const btn   = document.getElementById("musicBtn");
     if (!audio || !btn) return;
 
-    // Volume restore
+    // volume
     const vol = safeNum(localStorage.getItem(KEY_V), 0.5);
     audio.volume = Math.min(1, Math.max(0.05, vol));
     audio.muted = false;
 
-    // Restore time
+    // restore time (quan trọng)
     const savedTime = safeNum(localStorage.getItem(KEY_T), 0);
-    audio.addEventListener(
-      "loadedmetadata",
-      () => {
-        if (savedTime > 0) {
-          try {
-            audio.currentTime = Math.min(
-              savedTime,
-              Math.max(0, audio.duration - 0.25)
-            );
-          } catch {}
-        }
-      },
-      { once: true }
-    );
+    audio.addEventListener("loadedmetadata", () => {
+      if (savedTime > 0) {
+        try {
+          audio.currentTime = Math.min(savedTime, Math.max(0, audio.duration - 0.25));
+        } catch {}
+      }
 
-    // Lưu thời gian để sang trang tiếp tục
+      // nếu đang ON từ trang trước -> phát tiếp
+      const isOn = localStorage.getItem(KEY_ON) === "true";
+      if (isOn) {
+        const p = audio.play();
+        if (p && p.catch) {
+          p.catch(() => {
+            // nếu autoplay bị chặn, chỉ cần 1 click/tap bất kỳ là phát lại
+            const resume = () => {
+              audio.play().catch(() => {});
+              window.removeEventListener("pointerdown", resume);
+            };
+            window.addEventListener("pointerdown", resume);
+          });
+        }
+      }
+    }, { once: true });
+
+    // set nút theo trạng thái
+    setBtn(btn, localStorage.getItem(KEY_ON) === "true");
+
+    // lưu time liên tục + khi rời trang
     audio.addEventListener("timeupdate", () => {
       localStorage.setItem(KEY_T, String(audio.currentTime || 0));
     });
@@ -293,60 +296,27 @@ document.addEventListener("DOMContentLoaded", () => {
       localStorage.setItem(KEY_T, String(audio.currentTime || 0));
     });
 
-    // Trạng thái ban đầu (đồng bộ từ trang trước)
-    const isOn = localStorage.getItem(KEY_ON) === "true";
-    setBtn(btn, isOn);
-
-    // Nếu đang ON từ trang trước -> tự phát tiếp
-    if (isOn) {
-      tryPlay(audio).then((ok) => {
-        if (!ok) {
-          // Nếu bị chặn autoplay, chỉ cần 1 lần chạm/click bất kỳ là phát
-          const resume = () => {
-            tryPlay(audio);
-            window.removeEventListener("pointerdown", resume);
-          };
-          window.addEventListener("pointerdown", resume);
-        }
-      });
-    } else {
-      audio.pause();
-    }
-
-    // Toggle: OFF->Play, ON->Pause (và lưu trạng thái cho các trang khác)
+    // Toggle: OFF->Play, ON->Pause
     btn.addEventListener("click", () => {
-      const nowOn = !(localStorage.getItem(KEY_ON) === "true");
+      const isOn = localStorage.getItem(KEY_ON) === "true";
 
-      localStorage.setItem(KEY_ON, nowOn ? "true" : "false");
-      setBtn(btn, nowOn);
+      if (!isOn) {
+        localStorage.setItem(KEY_ON, "true");
+        setBtn(btn, true);
 
-      if (nowOn) {
-        // Bật nhạc
         audio.muted = false;
-        audio.volume = Math.min(1, Math.max(0.05, audio.volume || 0.5));
         const p = audio.play();
         if (p && p.catch) {
           p.catch(() => {
-            // Nếu play fail thì trả về OFF cho đúng
+            // play fail thì trả OFF cho đúng
             localStorage.setItem(KEY_ON, "false");
             setBtn(btn, false);
           });
         }
       } else {
-        // Tắt nhạc
         audio.pause();
-      }
-    });
-
-    // Nếu anh mở nhiều tab, đổi trạng thái ở tab này tab kia cũng cập nhật
-    window.addEventListener("storage", (e) => {
-      if (e.key !== KEY_ON) return;
-      const on = localStorage.getItem(KEY_ON) === "true";
-      setBtn(btn, on);
-      if (on) {
-        tryPlay(audio).catch(() => {});
-      } else {
-        audio.pause();
+        localStorage.setItem(KEY_ON, "false");
+        setBtn(btn, false);
       }
     });
   }
